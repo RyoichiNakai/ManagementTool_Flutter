@@ -1,3 +1,4 @@
+import 'package:management/utils/database/database_todolist.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -11,21 +12,22 @@ import 'dart:io';
 
 /// データベース毎にこのクラスを継承したProviderを実装する
 abstract class DatabaseProvider {
+  //_internalは
   Database db;
   String get databaseName;
-  void createDBTable(Database database, int version, String tableName);
+  createDBTable(Database db, String tableName);
 
-  void init() async {
+  init() async {
+    if (db != null) return;
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentDirectory.path, databaseName);
     //deleteDatabase(path);
     // openDatabaseメソッドを使用することでDBインスタンスを取得することができる。
-    if(db == null){
-      db = await openDatabase(
-        path,
-        version: 1,
-        onCreate: (Database database, int version) => createDBTable,
-      );
-    }
+    db = await openDatabase(
+      path,
+      version: 1,
+      onCreate: (Database db, int version) => createDBTable,
+
+    );
   }
 }

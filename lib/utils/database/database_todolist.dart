@@ -7,7 +7,7 @@ class DbProvider extends DatabaseProvider {
   String get databaseName => 'todolist.db';
 
   @override
-  createDBTable(Database db, int version, String tableName) => db.execute(
+  createDBTable(Database db, String tableName) async => await db.execute(
     """
           CREATE TABLE $tableName(
             "key" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,4 +61,7 @@ class DbProvider extends DatabaseProvider {
     = await db.query(tableName, where:"title = ?", whereArgs:[name]);
     return maps;
   }
+
+
+  Future close() async => db.close();
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:management/pages/add_section_page.dart';
+import 'package:management/utils/database/database_todolist.dart';
 
 class MyToDoListPage extends StatefulWidget {
   MyToDoListPage({Key key}) : super(key: key);
@@ -10,6 +11,7 @@ class MyToDoListPage extends StatefulWidget {
 }
 
 class _MyToDoListPageState extends State<MyToDoListPage> {
+  DbProvider _provider = new DbProvider();
 
   @override
   void initState() {

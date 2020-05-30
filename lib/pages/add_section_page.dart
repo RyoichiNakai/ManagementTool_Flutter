@@ -4,6 +4,8 @@ import 'package:flutter/painting.dart';
 import 'package:management/utils/utils.dart';
 import 'package:management/utils/app_info.dart';
 import 'package:management/utils/app_shared_pref.dart';
+import 'package:management/utils/database/database_todolist.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //todo:画面遷移をモーダルで行う
 class AddSectionPage extends StatefulWidget {
@@ -43,15 +45,38 @@ class _AddSectionPageState extends State<AddSectionPage> {
     super.dispose();
   }
 
-  void close() {
-    Utils.pop(context);
+  _onPressed(BuildContext context) async{
+    try {
+      DbProvider _provider = new DbProvider();
+      await _provider.init();
+      await _provider.createDBTable(_provider.db, _sectionName);
+      _reset();
+      _close();
+    }
+    catch (e) {
+      List<Widget> actions = [
+        CupertinoDialogAction(
+          isDefaultAction: true,
+          child: Text('OK'),
+          onPressed: _close,
+        )
+      ];
+      String title = 'このセクションは\n既に作成されています';
+      Utils.showConfirmDialog(context, title, actions, hasContent: false);
+      print(e);
+    }
   }
 
-  void _updateSectionName(String name){
+  _reset() {
     setState(() {
-      _sectionName = name;
-      //todo:ここのエラーの直し
+      _sectionName = '';
+      _textEditingController.text = '';
     });
+    AppSharedPrefs.clearSectionName();
+  }
+
+  _close() {
+    Utils.pop(context);
   }
 
   @override
@@ -60,7 +85,17 @@ class _AddSectionPageState extends State<AddSectionPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildTextFormCard(context),
+        Container(
+          //todo:見栄え悪いからspaceboxにした方がいいかも
+          height: AppInfo.getMediaQuerySizeHeight(context) / 7,
+        ),
+        //todo:メソッドの抽出と位置調整
+        Text('オプション', style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
+        Divider(height:1.0),
+        _buildColorListTile(context),
+        Divider(height:1.0),
       ],
+
     );
 
     return Scaffold(
@@ -84,12 +119,14 @@ class _AddSectionPageState extends State<AddSectionPage> {
             Icons.keyboard_arrow_down,
             size: 24.0,
           ),
-          onPressed: close
+          onPressed: _close,
       ),
       title: Text(
         'セクションの追加',
         style: TextStyle(
-            fontSize: AppInfo.appBarTitleFontSize, fontWeight: FontWeight.bold),
+            fontSize: AppInfo.appBarTitleFontSize,
+            fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -117,7 +154,11 @@ class _AddSectionPageState extends State<AddSectionPage> {
                 labelText: 'Section Name...',
               ),
               onChanged: (value) {
-                _updateSectionName(value);
+
+                setState(() {
+                  _sectionName = value;
+                });
+
                 AppSharedPrefs.setSectionName(_sectionName);
               },
             ),
@@ -130,12 +171,9 @@ class _AddSectionPageState extends State<AddSectionPage> {
                   RaisedButton(
                     child: Text('セクションを作成'),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    onPressed: _sectionName.length > 0
-                        ? () {
-                            //todo: dbのテーブルを作成,pop
-                          }
-                        : null,
+                        borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    onPressed: _sectionName.length > 0 ? () async => _onPressed(context) : null,
                   ),
                 ],
               ),
@@ -144,6 +182,47 @@ class _AddSectionPageState extends State<AddSectionPage> {
         ),
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+    );
+  }
+
+  Widget buildArrowIcon() => Padding(
+    padding: const EdgeInsetsDirectional.only(end: 8.0),
+    child: Icon(
+      Icons.arrow_forward_ios, size: 16.0,
+    ),
+  );
+
+  Widget buildListTileText(String title) {
+    return Expanded(
+      child: Text(
+        title,
+        softWrap: true,
+        maxLines: 3,
+      ),
+    );
+  }
+
+  Widget _buildColorListTile(BuildContext context){
+    return InkWell(
+        onTap: () => null,//AppDataSelectUtils.onTapSelectColorTheme(context),
+        child: Card(
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+              title: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 8.0),
+                    child: const Icon(
+                      FontAwesomeIcons.palette,
+                      size: 22.0,
+                    ),
+                  ),
+                  buildListTileText('セクションカードのカラーテーマ変更'),
+                ],
+              ),
+              trailing: buildArrowIcon(),
+            ),
+        ),
     );
   }
 }

@@ -60,4 +60,17 @@ class Utils{
     if (Navigator.of(context).canPop()) Navigator.of(context).pop();
   }
 
+  static void showConfirmDialog(BuildContext context, String title, List<Widget> widgets, {bool hasContent, String content}){
+    showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context){
+          return CupertinoAlertDialog(
+            title: Text(title),
+            content: hasContent ? Text(content) : null,
+            actions: widgets
+          );
+        }
+    );
+  }
+
 }

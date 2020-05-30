@@ -12,4 +12,5 @@ class AppSharedPrefs {
 
   static Future<bool> setSectionName(String value) => _sharedPreferences.setString(_sectionName, value);
   static String getSectionName() => _sharedPreferences.getString(_sectionName) ?? "";
+  static Future<bool> clearSectionName() => _sharedPreferences.setString(_sectionName, "");
 }
