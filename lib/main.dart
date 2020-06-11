@@ -45,10 +45,10 @@ class MyApp extends StatelessWidget {
 
   final themeDataDark = ThemeData.dark().copyWith(
     primaryColorDark: Colors.black,
-    backgroundColor: Colors.grey[800],
+    iconTheme: IconThemeData.fallback().copyWith(
+      color: Colors.blueGrey,
+    ),
     accentColor: Colors.blue, //ボタンの中のアイコンの色
-    textSelectionColor: Colors.white, //タブバーの文字の色
-    canvasColor: Colors.white, //カードの中の文字
   );
 
 

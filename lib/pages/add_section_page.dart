@@ -85,17 +85,14 @@ class _AddSectionPageState extends State<AddSectionPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildTextFormCard(context),
-        Container(
-          //todo:見栄え悪いからspaceboxにした方がいいかも
-          height: AppInfo.getMediaQuerySizeHeight(context) / 7,
-        ),
-        //todo:メソッドの抽出と位置調整
-        Text('オプション', style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold)),
         Divider(height:1.0),
-        _buildColorListTile(context),
+        _buildTitleListTile('オプション'),
+        Divider(height:1.0),
+        _buildListTile(context, 'カードのカラーテーマ変更', FontAwesomeIcons.palette, Colors.blue, null),
+        Divider(height:1.0),
+        _buildListTile(context, 'カードのアイコンを変更', FontAwesomeIcons.heart, Colors.red, null),
         Divider(height:1.0),
       ],
-
     );
 
     return Scaffold(
@@ -185,14 +182,26 @@ class _AddSectionPageState extends State<AddSectionPage> {
     );
   }
 
-  Widget buildArrowIcon() => Padding(
+  Widget _buildTitleListTile(String title) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildArrowIcon() => Padding(
     padding: const EdgeInsetsDirectional.only(end: 8.0),
     child: Icon(
       Icons.arrow_forward_ios, size: 16.0,
     ),
   );
 
-  Widget buildListTileText(String title) {
+  Widget _buildListTileText(String title) {
     return Expanded(
       child: Text(
         title,
@@ -202,26 +211,21 @@ class _AddSectionPageState extends State<AddSectionPage> {
     );
   }
 
-  Widget _buildColorListTile(BuildContext context){
+  Widget _buildListTile(BuildContext context, String title, IconData icon, Color color, VoidCallback callback){
     return InkWell(
-        onTap: () => null,//AppDataSelectUtils.onTapSelectColorTheme(context),
-        child: Card(
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-              title: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(end: 8.0),
-                    child: const Icon(
-                      FontAwesomeIcons.palette,
-                      size: 22.0,
-                    ),
-                  ),
-                  buildListTileText('セクションカードのカラーテーマ変更'),
-                ],
+        onTap: () => callback,//AppDataSelectUtils.onTapSelectColorTheme(context),
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+          title: Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsetsDirectional.only(end: 8.0),
+                child: Icon(icon, color: color, size: 22.0),
               ),
-              trailing: buildArrowIcon(),
-            ),
+              _buildListTileText(title),
+            ],
+          ),
+          trailing: _buildArrowIcon(),
         ),
     );
   }
