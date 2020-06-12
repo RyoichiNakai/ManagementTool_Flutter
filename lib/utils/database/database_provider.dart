@@ -27,7 +27,6 @@ abstract class DatabaseProvider {
       path,
       version: 1,
       onCreate: (Database db, int version) => createDBTable,
-
     );
   }
 }

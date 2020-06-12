@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,15 +17,23 @@ class MyToDoListPage extends StatefulWidget {
 class _MyToDoListPageState extends State<MyToDoListPage> {
   DbProvider _provider = new DbProvider();
   Icon _defaultIcon = Icon(FontAwesomeIcons.icons);
-  List<ToDoListModel> modelList;
+  var tableList = [];
 
   @override
   void initState() {
     super.initState();
-    modelList = [];
   }
 
-  //todo:テーブル名の取得
+  @override
+  void dispose(){
+    super.dispose();
+  }
+
+  Future getDBTables() async {
+    DbProvider _provider = new DbProvider();
+    var tables = _provider.getTables();
+    return tables;
+  }
 
   void _appBarLeadingOnPressed() {
     //todo
@@ -42,8 +52,8 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
       newIndex -= 1;
     }
     setState(() {
-      final model = modelList.removeAt(oldIndex);
-      modelList.insert(newIndex, model);
+      final table = tableList.removeAt(oldIndex);
+      tableList.insert(newIndex, table);
     });
   }
 
@@ -60,13 +70,29 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
         ),
         onPressed: _floatingActionButtonOnPressed
       ),
-      body: ReorderableListView(
-        onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex),
-        children: modelList
-            .map((ToDoListModel model) => buildListItem(context,
-            model.title, model.dateTime, model.key.toString()))
-            .toList(),
+      body: FutureBuilder(
+        //future
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          if (snapshot.hasData){
+            setState(() {
+              //todo:どうやってtableリストをStreamBuilderで表示させればいい？
+            });
+            return _buildReorderableList(context);
+          }else{
+            return Container();
+          }
+        }
       ),
+    );
+  }
+
+  ReorderableListView _buildReorderableList(BuildContext context) {
+    return ReorderableListView(
+      onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex),
+      //todo:ここもtablelistでいいんかわからん
+      children: tableList
+          .map((i) => _buildListItem(context, tableList[i], i.toString()))
+          .toList(),
     );
   }
 
@@ -85,13 +111,11 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
     );
   }
 
-  Widget buildListItem(
-      BuildContext context, String title, String dateTime, String key,
-      {VoidCallback callback}) {
+  Widget _buildListItem(BuildContext context, String tableName, String key, {VoidCallback callback}) {
     return ListTile(
       key: Key(key),
       leading: _defaultIcon,
-      title: Text(title),
+      title: Text(tableName),
       onTap: () {},
       //todo:長く押したら周りが黒くなるのなんで
     );
