@@ -31,8 +31,11 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
 
   Future getDBTables() async {
     DbProvider _provider = new DbProvider();
-    var tables = _provider.getTables();
-    return tables;
+    var tables = await _provider.getTables();
+    setState(() {
+      tableList = tables;
+    });
+    return Future.value(tables);
   }
 
   void _appBarLeadingOnPressed() {
@@ -71,7 +74,8 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
         onPressed: _floatingActionButtonOnPressed
       ),
       body: FutureBuilder(
-        //future
+        //future: getDBTables(),
+        //todo:ここのエラーが謎、、、
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData){
             setState(() {
