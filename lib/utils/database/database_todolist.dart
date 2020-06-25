@@ -19,12 +19,13 @@ class DbProvider extends DatabaseProvider {
   );
 
   //テーブル一覧の取得
-  Future<List<String>> getTables() async {
+  getTables() async {
     final maps = await db.rawQuery("select * from sqlite_master where type='table'");
     final tables = [];
     for (int i = 0; i < maps.length; i++){
       if (maps[i]['tbl_name'] == 'sqlite_sequence') continue;
       tables.add(maps[i]['tbl_name']);
+
     }
     return tables;
   }

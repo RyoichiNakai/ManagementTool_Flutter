@@ -15,9 +15,8 @@ class MyToDoListPage extends StatefulWidget {
 }
 
 class _MyToDoListPageState extends State<MyToDoListPage> {
-  DbProvider _provider = new DbProvider();
   Icon _defaultIcon = Icon(FontAwesomeIcons.icons);
-  var tableList = [];
+  var _tableList = [];
 
   @override
   void initState() {
@@ -29,13 +28,11 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
     super.dispose();
   }
 
-  Future getDBTables() async {
+  Future<String> _getDBTables() async {
     DbProvider _provider = new DbProvider();
-    var tables = await _provider.getTables();
-    setState(() {
-      tableList = tables;
-    });
-    return Future.value(tables);
+    var _tables = await _provider.getTables();
+    //todo:デバッグをするとここがnullになる
+    return _tables;
   }
 
   void _appBarLeadingOnPressed() {
@@ -55,8 +52,8 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
       newIndex -= 1;
     }
     setState(() {
-      final table = tableList.removeAt(oldIndex);
-      tableList.insert(newIndex, table);
+      final table = _tableList.removeAt(oldIndex);
+      _tableList.insert(newIndex, table);
     });
   }
 
@@ -74,14 +71,14 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
         onPressed: _floatingActionButtonOnPressed
       ),
       body: FutureBuilder(
-        //future: getDBTables(),
+        future: _getDBTables(),
         //todo:ここのエラーが謎、、、
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData){
-            setState(() {
-              //todo:どうやってtableリストをStreamBuilderで表示させればいい？
-            });
-            return _buildReorderableList(context);
+            print(snapshot);
+            return Container(
+              child: _buildReorderableList(context)
+            );
           }else{
             return Container();
           }
@@ -94,9 +91,7 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
     return ReorderableListView(
       onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex),
       //todo:ここもtablelistでいいんかわからん
-      children: tableList
-          .map((i) => _buildListItem(context, tableList[i], i.toString()))
-          .toList(),
+      children: _tableList.map((i) => _buildListItem(context, _tableList[i], i.toString())).toList(),
     );
   }
 
