@@ -19,13 +19,12 @@ class DbProvider extends DatabaseProvider {
   );
 
   //テーブル一覧の取得
-  getTables() async {
+  Future getTables() async {
     final maps = await db.rawQuery("select * from sqlite_master where type='table'");
     final tables = [];
     for (int i = 0; i < maps.length; i++){
       if (maps[i]['tbl_name'] == 'sqlite_sequence') continue;
       tables.add(maps[i]['tbl_name']);
-
     }
     return tables;
   }
@@ -61,9 +60,7 @@ class DbProvider extends DatabaseProvider {
 
   //取得
   Future<List<Map<String, dynamic>>> getList(String tableName) async{
-    final List<Map<String, dynamic>> maps
-
-    = await db.query(tableName, orderBy: "key");
+    final List<Map<String, dynamic>> maps = await db.query(tableName, orderBy: "key");
     return maps;
   }
 

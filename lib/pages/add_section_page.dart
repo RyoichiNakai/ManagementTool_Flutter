@@ -21,6 +21,7 @@ class AddSectionPage extends StatefulWidget {
 
 class _AddSectionPageState extends State<AddSectionPage> {
   final _formKey = GlobalKey<FormState>();
+  final DbProvider _provider = new DbProvider();
   final FocusNode _nameFocusNode = new FocusNode();
   final TextEditingController _textEditingController = new TextEditingController();
   String _sectionName = '';
@@ -28,6 +29,8 @@ class _AddSectionPageState extends State<AddSectionPage> {
   @override
   void initState() {
     super.initState();
+    //todo: initが追加されていなかった
+    _provider.init();
     _readText();
   }
 

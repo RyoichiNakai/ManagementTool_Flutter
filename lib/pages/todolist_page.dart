@@ -15,11 +15,14 @@ class MyToDoListPage extends StatefulWidget {
 }
 
 class _MyToDoListPageState extends State<MyToDoListPage> {
+  DbProvider _provider = new DbProvider();
   Icon _defaultIcon = Icon(FontAwesomeIcons.icons);
-  var _tableList = [];
+  var _tableList;
 
   @override
   void initState() {
+    //todo：initが追加されていなかったこの後の挙動がどうなるか確かめる
+    _provider.init(); //dbの初期化
     super.initState();
   }
 
@@ -28,9 +31,9 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
     super.dispose();
   }
 
-  Future<String> _getDBTables() async {
-    DbProvider _provider = new DbProvider();
-    var _tables = await _provider.getTables();
+  _getDBTables() async {
+    final _tables = await _provider.getTables();
+    _tableList = List.generate(_tables.length, (i) => _tables[i]);
     //todo:デバッグをするとここがnullになる
     return _tables;
   }
@@ -73,14 +76,15 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
       body: FutureBuilder(
         future: _getDBTables(),
         //todo:ここのエラーが謎、、、
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.hasData){
-            print(snapshot);
-            return Container(
-              child: _buildReorderableList(context)
-            );
-          }else{
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            print(snapshot.data);
             return Container();
+            //return Center(child: CircularProgressIndicator());
+          } else {
+            return Container(
+                child: _buildReorderableList(context)
+            );
           }
         }
       ),
