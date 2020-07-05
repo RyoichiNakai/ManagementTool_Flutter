@@ -7,7 +7,6 @@ import 'package:management/utils/app_shared_pref.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-//todo:画面遷移をモーダルで行う
 class AddSectionPage extends StatefulWidget {
   AddSectionPage({Key key}) : super(key: key);
 
@@ -29,13 +28,11 @@ class _AddSectionPageState extends State<AddSectionPage> {
   @override
   void initState() {
     super.initState();
-    //todo: initが追加されていなかった
-    _provider.init();
     _readText();
   }
 
   void _readText() async{
-    //todo:Tweecha2のようにmainのところでFutureBilderを使った方が良い？？
+
     await AppSharedPrefs.setInstance();
     setState(() {
       _sectionName = AppSharedPrefs.getSectionName();
