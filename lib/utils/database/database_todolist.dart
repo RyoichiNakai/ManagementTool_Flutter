@@ -26,6 +26,7 @@ class DbProvider extends DatabaseProvider {
       if (maps[i]['tbl_name'] == 'sqlite_sequence') continue;
       tables.add(maps[i]['tbl_name']);
     }
+    print(tables);
     return tables;
   }
 

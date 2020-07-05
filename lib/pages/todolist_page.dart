@@ -15,15 +15,13 @@ class MyToDoListPage extends StatefulWidget {
 }
 
 class _MyToDoListPageState extends State<MyToDoListPage> {
-  DbProvider _provider = new DbProvider();
   Icon _defaultIcon = Icon(FontAwesomeIcons.icons);
   var _tableList;
 
   @override
   void initState() {
-    //todo：initが追加されていなかったこの後の挙動がどうなるか確かめる
-    _provider.init(); //dbの初期化
     super.initState();
+    //todo：initが追加されていなかったこの後の挙動がどうなるか確かめる
   }
 
   @override
@@ -32,10 +30,16 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
   }
 
   _getDBTables() async {
-    final _tables = await _provider.getTables();
-    _tableList = List.generate(_tables.length, (i) => _tables[i]);
-    //todo:デバッグをするとここがnullになる
-    return _tables;
+    try {
+      await new Future.delayed(new Duration(milliseconds: 500));
+      DbProvider _provider = new DbProvider();
+      await _provider.init();
+      List _tables = await _provider.getTables();
+      return _tables;
+    }
+    catch (e) {
+      print(e);
+    }
   }
 
   void _appBarLeadingOnPressed() {
@@ -50,15 +54,15 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
     AddSectionPage.push(context);
   }
 
-  void _onReorder(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
-    }
-    setState(() {
-      final table = _tableList.removeAt(oldIndex);
-      _tableList.insert(newIndex, table);
-    });
-  }
+//  void _onReorder(int oldIndex, int newIndex) {
+//    if (oldIndex < newIndex) {
+//      newIndex -= 1;
+//    }
+//    setState(() {
+//      final table = _tableList.removeAt(oldIndex);
+//      _tableList.insert(newIndex, table);
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,15 +79,18 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
       ),
       body: FutureBuilder(
         future: _getDBTables(),
-        //todo:ここのエラーが謎、、、
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             print(snapshot.data);
-            return Container();
-            //return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           } else {
             return Container(
-                child: _buildReorderableList(context)
+                child: ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return _buildListItem(context, snapshot.data[index], index.toString());
+                    },
+                ),
             );
           }
         }
@@ -91,13 +98,6 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
     );
   }
 
-  ReorderableListView _buildReorderableList(BuildContext context) {
-    return ReorderableListView(
-      onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex),
-      //todo:ここもtablelistでいいんかわからん
-      children: _tableList.map((i) => _buildListItem(context, _tableList[i], i.toString())).toList(),
-    );
-  }
 
   Widget _buildAppBar() {
     return AppBar(
@@ -115,13 +115,27 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
   }
 
   Widget _buildListItem(BuildContext context, String tableName, String key, {VoidCallback callback}) {
-    return ListTile(
-      key: Key(key),
-      leading: _defaultIcon,
-      title: Text(tableName),
-      onTap: () {},
-      //todo:長く押したら周りが黒くなるのなんで
+    return Column(
+        children: <Widget> [
+          ListTile(
+            key: Key(key),
+            leading: _defaultIcon,
+            title: Text(tableName),
+            onTap: () {},
+            //todo:長く押したら周りが黒くなるのなんで
+          ),
+          Divider(height:1.0)
+        ]
     );
   }
+
+//todo:時間があれば，reorderbleでできるかやってみよう
+/*  ReorderableListView _buildReorderableList(BuildContext context, List<dynamic> tables) {
+    return ReorderableListView(
+      onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex),
+
+      children: tables.map((i) => _buildListItem(context, tables[i], i.toString())).toList(),
+    );
+  }*/
 
 }
