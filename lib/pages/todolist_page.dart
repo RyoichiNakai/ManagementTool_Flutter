@@ -16,7 +16,6 @@ class MyToDoListPage extends StatefulWidget {
 
 class _MyToDoListPageState extends State<MyToDoListPage> {
   Icon _defaultIcon = Icon(FontAwesomeIcons.icons);
-  var _tableList;
 
   @override
   void initState() {
@@ -115,19 +114,41 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
   }
 
   Widget _buildListItem(BuildContext context, String tableName, String key, {VoidCallback callback}) {
-    return Column(
-        children: <Widget> [
-          ListTile(
-            key: Key(key),
-            leading: _defaultIcon,
-            title: Text(tableName),
-            onTap: () {},
-            //todo:長く押したら周りが黒くなるのなんで
-          ),
-          Divider(height:1.0)
-        ]
+    return Dismissible(
+      key: Key(key),
+      background: Container(color: Colors.red, child: Container(child: Icon(Icons.delete))),
+      secondaryBackground: Container(color: Colors.blue, child: Container(child: Icon(Icons.flag))),
+      onDismissed: (direction) {
+        print(direction);
+        if (direction == DismissDirection.endToStart) {
+          //todo:ここの具体的な実装は次回
+          print("end to start"); // (日本語だと)右から左のとき
+        } else {
+          print("start to end"); // (日本語だと?)左から右のとき
+        }
+      },
+      child: Column(
+          children: <Widget> [
+            ListTile(
+              key: Key(key),
+              leading: _defaultIcon,
+              title: Text(tableName),
+              trailing: _buildArrowIcon(),
+              onTap: () {},
+              //todo:長く押したら周りが黒くなるのなんで
+            ),
+            Divider(height:1.0)
+          ]
+      ),
     );
   }
+
+  Widget _buildArrowIcon() => Padding(
+    padding: const EdgeInsetsDirectional.only(end: 8.0),
+    child: Icon(
+      Icons.arrow_forward_ios, size: 16.0,
+    ),
+  );
 
 //todo:時間があれば，reorderbleでできるかやってみよう
 /*  ReorderableListView _buildReorderableList(BuildContext context, List<dynamic> tables) {
