@@ -12,21 +12,21 @@ import 'dart:io';
 
 /// データベース毎にこのクラスを継承したProviderを実装する
 abstract class DatabaseProvider {
-  //_internalは
   Database db;
   String get databaseName;
-  createDBTable(Database db, String tableName);
+  createDBTable(Database database, String tableName);
 
   init() async {
-    if (db != null) return;
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentDirectory.path, databaseName);
     //deleteDatabase(path);
     // openDatabaseメソッドを使用することでDBインスタンスを取得することができる。
-    db = await openDatabase(
-      path,
-      version: 1,
-      onCreate: (Database db, int version) => createDBTable,
-    );
+    if(db == null){
+      db = await openDatabase(
+        path,
+        version: 1,
+        onCreate: (Database database, int version) => createDBTable,
+      );
+    }
   }
 }
