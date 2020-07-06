@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:management/pages/add_section_page.dart';
+import 'package:management/utils/app_info.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:management/utils/model/todolist_model.dart';
+import 'package:management/Widgets/app_icon.dart';
 
 class MyToDoListPage extends StatefulWidget {
   MyToDoListPage({Key key}) : super(key: key);
@@ -30,7 +32,7 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
 
   _getDBTables() async {
     try {
-      await new Future.delayed(new Duration(milliseconds: 500));
+      await new Future.delayed(new Duration(milliseconds: 200));
       DbProvider _provider = new DbProvider();
       await _provider.init();
       List _tables = await _provider.getTables();
@@ -116,8 +118,18 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
   Widget _buildListItem(BuildContext context, String tableName, String key, {VoidCallback callback}) {
     return Dismissible(
       key: Key(key),
-      background: Container(color: Colors.red, child: Container(child: Icon(Icons.delete))),
-      secondaryBackground: Container(color: Colors.blue, child: Container(child: Icon(Icons.flag))),
+      background: Container(
+          color: Colors.red,
+          child: Container(
+              child: Icon(Icons.delete)
+          ),
+      ),
+      secondaryBackground: Container(
+          color: Colors.blue,
+          child: Container(
+              child: Icon(Icons.flag)
+          ),
+      ),
       onDismissed: (direction) {
         print(direction);
         if (direction == DismissDirection.endToStart) {
@@ -133,7 +145,7 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
               key: Key(key),
               leading: _defaultIcon,
               title: Text(tableName),
-              trailing: _buildArrowIcon(),
+              trailing: AppIcon.buildArrowIcon(),
               onTap: () {},
               //todo:長く押したら周りが黒くなるのなんで
             ),
@@ -142,13 +154,6 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
       ),
     );
   }
-
-  Widget _buildArrowIcon() => Padding(
-    padding: const EdgeInsetsDirectional.only(end: 8.0),
-    child: Icon(
-      Icons.arrow_forward_ios, size: 16.0,
-    ),
-  );
 
 //todo:時間があれば，reorderbleでできるかやってみよう
 /*  ReorderableListView _buildReorderableList(BuildContext context, List<dynamic> tables) {

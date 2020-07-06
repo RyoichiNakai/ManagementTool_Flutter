@@ -6,6 +6,7 @@ import 'package:management/utils/app_info.dart';
 import 'package:management/utils/app_shared_pref.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:management/Widgets/app_icon.dart';
 
 class AddSectionPage extends StatefulWidget {
   AddSectionPage({Key key}) : super(key: key);
@@ -194,13 +195,6 @@ class _AddSectionPageState extends State<AddSectionPage> {
     );
   }
 
-  Widget _buildArrowIcon() => Padding(
-    padding: const EdgeInsetsDirectional.only(end: 8.0),
-    child: Icon(
-      Icons.arrow_forward_ios, size: 16.0,
-    ),
-  );
-
   Widget _buildListTileText(String title) {
     return Expanded(
       child: Text(
@@ -225,7 +219,7 @@ class _AddSectionPageState extends State<AddSectionPage> {
               _buildListTileText(title),
             ],
           ),
-          trailing: _buildArrowIcon(),
+          trailing: AppIcon.buildArrowIcon(),
         ),
     );
   }
