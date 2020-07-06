@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:management/pages/add_section_page.dart';
+import 'package:management/pages/todolist_page.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:management/utils/model/todolist_model.dart';
 import 'package:management/Widgets/app_icon.dart';
@@ -151,8 +152,9 @@ class MyToDoListTablePageState extends State<MyToDoListTablePage> {
               leading: _defaultIcon,
               title: Text(tableName),
               trailing: AppIcon.buildArrowIcon(),
-              onTap: () {},
-              //todo:長く押したら周りが黒くなるのなんで
+              onTap: () {
+                MyToDoListPage.push(context, tableName: tableName, index: int.parse(key));
+              },
             ),
             Divider(height:1.0)
           ]

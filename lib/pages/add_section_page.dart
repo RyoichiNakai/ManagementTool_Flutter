@@ -88,9 +88,9 @@ class AddSectionPageState extends State<AddSectionPage> {
         Divider(height:1.0),
         _buildTitleListTile('オプション'),
         Divider(height:1.0),
-        _buildListTile(context, 'カードのカラーテーマ変更', FontAwesomeIcons.palette, Colors.blue, null),
+        _buildListTile(context, 'セクションのカラーテーマ変更', FontAwesomeIcons.palette, Colors.blue, null, fontSize: 16),
         Divider(height:1.0),
-        _buildListTile(context, 'カードのアイコンを変更', FontAwesomeIcons.heart, Colors.red, null),
+        _buildListTile(context, 'セクションのアイコンを変更', FontAwesomeIcons.heart, Colors.red, null, fontSize: 16),
         Divider(height:1.0),
       ],
     );
@@ -188,17 +188,20 @@ class AddSectionPageState extends State<AddSectionPage> {
     );
   }
 
-  Widget _buildListTileText(String title) {
+  Widget _buildListTileText(String title, {double fontSize}) {
     return Expanded(
       child: Text(
         title,
         softWrap: true,
         maxLines: 3,
+        style: TextStyle(
+          fontSize: fontSize,
+        ),
       ),
     );
   }
 
-  Widget _buildListTile(BuildContext context, String title, IconData icon, Color color, VoidCallback callback){
+  Widget _buildListTile(BuildContext context, String title, IconData icon, Color color, VoidCallback callback, {double fontSize}){
     return InkWell(
         onTap: () => callback,//AppDataSelectUtils.onTapSelectColorTheme(context),
         child: ListTile(
@@ -209,7 +212,7 @@ class AddSectionPageState extends State<AddSectionPage> {
                 padding: const EdgeInsetsDirectional.only(end: 8.0),
                 child: Icon(icon, color: color, size: 22.0),
               ),
-              _buildListTileText(title),
+              _buildListTileText(title, fontSize: fontSize),
             ],
           ),
           trailing: AppIcon.buildArrowIcon(),

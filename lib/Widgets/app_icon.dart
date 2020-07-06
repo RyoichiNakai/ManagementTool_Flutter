@@ -6,7 +6,7 @@ class AppIcon {
   static Widget buildArrowBackIconButton({VoidCallback callback}) => IconButton(
     icon: Icon(
       Icons.arrow_back_ios,
-      size: 24.0,
+      size: 18.0,
     ),
     onPressed: callback,
   );
