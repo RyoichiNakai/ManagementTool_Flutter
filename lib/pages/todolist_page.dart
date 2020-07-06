@@ -4,19 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:management/pages/add_section_page.dart';
-import 'package:management/utils/app_info.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:management/utils/model/todolist_model.dart';
 import 'package:management/Widgets/app_icon.dart';
 
 class MyToDoListPage extends StatefulWidget {
+
   MyToDoListPage({Key key}) : super(key: key);
 
   @override
-  _MyToDoListPageState createState() => _MyToDoListPageState();
+  MyToDoListPageState createState() => MyToDoListPageState();
 }
 
-class _MyToDoListPageState extends State<MyToDoListPage> {
+class MyToDoListPageState extends State<MyToDoListPage> {
+
+  final GlobalKey<MyToDoListPageState> todoListPageKey = GlobalKey<MyToDoListPageState>();
+  //todo:このアイコンは後に変更
   Icon _defaultIcon = Icon(FontAwesomeIcons.icons);
 
   @override
@@ -43,6 +46,7 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
     }
   }
 
+
   void _appBarLeadingOnPressed() {
     //todo
   }
@@ -52,7 +56,7 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
   }
 
   void _floatingActionButtonOnPressed() {
-    AddSectionPage.push(context);
+    AddSectionPage.push(context, state: this);
   }
 
 //  void _onReorder(int oldIndex, int newIndex) {
@@ -116,6 +120,7 @@ class _MyToDoListPageState extends State<MyToDoListPage> {
   }
 
   Widget _buildListItem(BuildContext context, String tableName, String key, {VoidCallback callback}) {
+    //todo;全部消したあ，エラーが出る
     return Dismissible(
       key: Key(key),
       background: Container(

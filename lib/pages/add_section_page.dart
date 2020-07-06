@@ -7,21 +7,21 @@ import 'package:management/utils/app_shared_pref.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:management/Widgets/app_icon.dart';
+import 'package:management/pages/todolist_page.dart';
 
 class AddSectionPage extends StatefulWidget {
   AddSectionPage({Key key}) : super(key: key);
 
   @override
-  _AddSectionPageState createState() => _AddSectionPageState();
+  AddSectionPageState createState() => AddSectionPageState();
 
-  static void push(BuildContext context) {
-    Utils.pushModal(context, AddSectionPage());
+  static void push(BuildContext context, {State<StatefulWidget> state}) {
+    Utils.pushModal(context, AddSectionPage(), state: state);
   }
+
 }
 
-class _AddSectionPageState extends State<AddSectionPage> {
-  final _formKey = GlobalKey<FormState>();
-  final DbProvider _provider = new DbProvider();
+class AddSectionPageState extends State<AddSectionPage> {
   final FocusNode _nameFocusNode = new FocusNode();
   final TextEditingController _textEditingController = new TextEditingController();
   String _sectionName = '';
@@ -33,7 +33,6 @@ class _AddSectionPageState extends State<AddSectionPage> {
   }
 
   void _readText() async{
-
     await AppSharedPrefs.setInstance();
     setState(() {
       _sectionName = AppSharedPrefs.getSectionName();

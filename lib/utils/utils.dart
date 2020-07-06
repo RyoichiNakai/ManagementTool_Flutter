@@ -4,14 +4,14 @@ import 'package:management/utils/transition/transition.dart';
 
 class Utils{
 
-  static void pushModal(BuildContext context, Widget widget){
+  static void pushModal(BuildContext context, Widget widget, {State<StatefulWidget> state}){
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => widget,
           fullscreenDialog: true
         )
-    );
+    ).then((value) => state?.setState(() { }));
   }
 
   static void pushBounce(BuildContext context, Widget widget){
@@ -58,6 +58,10 @@ class Utils{
 
   static void pop(BuildContext context){
     if (Navigator.of(context).canPop()) Navigator.of(context).pop();
+  }
+
+  static void popNsetState(BuildContext context){
+
   }
 
   static void showConfirmDialog(BuildContext context, String title, List<Widget> widgets, {bool hasContent, String content}){
