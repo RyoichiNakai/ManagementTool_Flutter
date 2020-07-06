@@ -111,13 +111,7 @@ class AddSectionPageState extends State<AddSectionPage> {
 
   Widget _buildAppBar(BuildContext context) {
     return AppBar(
-      leading: IconButton(
-          icon: Icon(
-            Icons.keyboard_arrow_down,
-            size: 24.0,
-          ),
-          onPressed: _close,
-      ),
+      leading: AppIcon.buildArrowDownIconButton(callback: _close),
       title: Text(
         'セクションの追加',
         style: TextStyle(
