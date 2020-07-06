@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:management/pages/todolist_page.dart';
+import 'package:management/pages/todolist_table_page.dart';
 
 class AppInfo{
 
