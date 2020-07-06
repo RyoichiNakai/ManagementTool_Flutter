@@ -8,17 +8,17 @@ import 'package:management/utils/database/database_todolist.dart';
 import 'package:management/utils/model/todolist_model.dart';
 import 'package:management/Widgets/app_icon.dart';
 
-class MyToDoListPage extends StatefulWidget {
+class MyToDoListTablePage extends StatefulWidget {
 
-  MyToDoListPage({Key key}) : super(key: key);
+  MyToDoListTablePage({Key key}) : super(key: key);
 
   @override
-  MyToDoListPageState createState() => MyToDoListPageState();
+  MyToDoListTablePageState createState() => MyToDoListTablePageState();
 }
 
-class MyToDoListPageState extends State<MyToDoListPage> {
+class MyToDoListTablePageState extends State<MyToDoListTablePage> {
 
-  final GlobalKey<MyToDoListPageState> todoListPageKey = GlobalKey<MyToDoListPageState>();
+  final GlobalKey<MyToDoListTablePageState> todoListPageKey = GlobalKey<MyToDoListTablePageState>();
   //todo:このアイコンは後に変更
   Icon _defaultIcon = Icon(FontAwesomeIcons.icons);
 

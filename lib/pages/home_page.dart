@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: [
-          MyToDoListPage(),
+          MyToDoListTablePage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
