@@ -81,24 +81,7 @@ class MyToDoListPageState extends State<MyToDoListPage> {
           ),
           onPressed: _floatingActionButtonOnPressed
       ),
-/*      body: FutureBuilder(
-          future: _getDBTables(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (!snapshot.hasData) {
-              print(snapshot.data);
-              return Center(child: CircularProgressIndicator());
-            } else {
-              return Container(
-                child: ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _buildListItem(context, snapshot.data[index], index.toString());
-                  },
-                ),
-              );
-            }
-          }
-      ),*/
+
     );
   }
 
@@ -146,21 +129,11 @@ class MyToDoListPageState extends State<MyToDoListPage> {
               title: Text(tableName),
               trailing: AppIcon.buildArrowIcon(),
               onTap: () {},
-
             ),
             Divider(height:1.0)
           ]
       ),
     );
   }
-
-//todo:時間があれば，reorderbleでできるかやってみよう
-/*  ReorderableListView _buildReorderableList(BuildContext context, List<dynamic> tables) {
-    return ReorderableListView(
-      onReorder: (oldIndex, newIndex) => _onReorder(oldIndex, newIndex),
-
-      children: tables.map((i) => _buildListItem(context, tables[i], i.toString())).toList(),
-    );
-  }*/
 
 }
