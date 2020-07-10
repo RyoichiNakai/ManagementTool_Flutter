@@ -104,7 +104,6 @@ class MyToDoListTablePageState extends State<MyToDoListTablePage> {
     );
   }
 
-
   Widget _buildAppBar() {
     return AppBar(
       leading: IconButton(
