@@ -36,13 +36,18 @@ class MyToDoListPage extends StatefulWidget {
   }
 }
 
-class MyToDoListPageState extends State<MyToDoListPage> {
+class MyToDoListPageState extends State<MyToDoListPage> with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation<Offset> offset;
 
   final GlobalKey<MyToDoListPageState> todoListPageKey = GlobalKey<MyToDoListPageState>();
+  bool _pressedFab = false;
 
   @override
   void initState() {
     super.initState();
+    controller = AnimationController(vsync: this, duration: Duration(seconds: 1));
+    offset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 1.0)).animate(controller);
   }
 
   @override
@@ -50,28 +55,26 @@ class MyToDoListPageState extends State<MyToDoListPage> {
     super.dispose();
   }
 
-  _floatingActionButtonOnPressed() {
-    //todo
-  }
-
   _close() {
     Utils.pop(context);
   }
 
-//  void _onReorder(int oldIndex, int newIndex) {
-//    if (oldIndex < newIndex) {
-//      newIndex -= 1;
-//    }
-//    setState(() {
-//      final table = _tableList.removeAt(oldIndex);
-//      _tableList.insert(newIndex, table);
-//    });
-//  }
+  _floatingActionButtonOnPressed() {
+    setState(() {
+      if (_pressedFab){
+        _pressedFab = false;
+      } else {
+        _pressedFab = true;
+      }
+    });
+    //todo
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).backgroundColor,
           child: Icon(
@@ -81,7 +84,34 @@ class MyToDoListPageState extends State<MyToDoListPage> {
           ),
           onPressed: _floatingActionButtonOnPressed
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).primaryColor,
+        notchMargin: 6.0,
+        shape: AutomaticNotchedShape(
+            RoundedRectangleBorder(),
+            StadiumBorder(
+              side: BorderSide(),
+            ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: new Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              //todo:FABを押した時に表示する
+               IconButton(
+                icon: Icon(
+                  Icons.info_outline,
+                  color: Colors.white,
+                ),
+                onPressed: () {},
+              )
+            ],
+          ),
+        ),
 
+      ),
     );
   }
 
@@ -91,7 +121,7 @@ class MyToDoListPageState extends State<MyToDoListPage> {
       title: Text(
           '${widget.tableName}',
         style: TextStyle(
-          fontSize: AppInfo.appBarTitleFontSize,
+          fontSize: AppInfo.appBarTitleFontSize + 1,
           fontWeight: FontWeight.bold
         ),
       ),
