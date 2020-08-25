@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:management/pages/todolist_section_page.dart';
+import 'package:management/pages/todolists/index_todolist_section_page.dart';
 import 'package:management/utils/utils.dart';
 
-class ColorSettingTodoListSectionPage extends StatefulWidget {
-  ColorSettingTodoListSectionPage({Key key}) : super(key: key);
+class EditColorNewTodoListSectionPage extends StatefulWidget {
+  EditColorNewTodoListSectionPage({Key key}) : super(key: key);
   @override
-  _ColorSettingTodoListSectionPageState createState() => _ColorSettingTodoListSectionPageState();
+  _EditColorNewTodoListSectionPageState createState() => _EditColorNewTodoListSectionPageState();
 
   static void push(BuildContext context, {State<StatefulWidget> state}) {
-    Utils.pushModal(context, ColorSettingTodoListSectionPage(), state: state);
+    Utils.pushModal(context, EditColorNewTodoListSectionPage(), state: state);
   }
 }
 
-class _ColorSettingTodoListSectionPageState extends State<ColorSettingTodoListSectionPage> {
+class _EditColorNewTodoListSectionPageState extends State<EditColorNewTodoListSectionPage> {
   PageController _pageController;
   int _page = 0;
 

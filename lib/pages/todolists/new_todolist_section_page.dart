@@ -7,21 +7,21 @@ import 'package:management/utils/app_shared_pref.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:management/Widgets/app_icon.dart';
-import 'package:management/pages/todolist_section_page.dart';
+import 'package:management/pages/todolists/index_todolist_section_page.dart';
 
-class AddSectionPage extends StatefulWidget {
-  AddSectionPage({Key key}) : super(key: key);
+class NewTodoListSectionPage extends StatefulWidget {
+  NewTodoListSectionPage({Key key}) : super(key: key);
 
   @override
-  AddSectionPageState createState() => AddSectionPageState();
+  _NewTodoListSectionPageState createState() => _NewTodoListSectionPageState();
 
   static void push(BuildContext context, {State<StatefulWidget> state}) {
-    Utils.pushModal(context, AddSectionPage(), state: state);
+    Utils.pushModal(context, NewTodoListSectionPage(), state: state);
   }
 
 }
 
-class AddSectionPageState extends State<AddSectionPage> {
+class _NewTodoListSectionPageState extends State<NewTodoListSectionPage> {
   final FocusNode _nameFocusNode = new FocusNode();
   final TextEditingController _textEditingController = new TextEditingController();
   String _sectionName = '';
@@ -85,12 +85,11 @@ class AddSectionPageState extends State<AddSectionPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildTextFormCard(context),
-        Divider(height:1.0),
         _buildTitleListTile('オプション'),
         Divider(height:1.0),
-        _buildListTile(context, 'セクションのカラーテーマ変更', FontAwesomeIcons.palette, Colors.blue, null, fontSize: 16),
+        _buildListTile(context, 'セクションのカラーテーマ変更', FontAwesomeIcons.palette, Colors.blue, null),
         Divider(height:1.0),
-        _buildListTile(context, 'セクションのアイコンを変更', FontAwesomeIcons.heart, Colors.red, null, fontSize: 16),
+        _buildListTile(context, 'セクションのアイコンを変更', FontAwesomeIcons.heart, Colors.red, null),
         Divider(height:1.0),
       ],
     );
@@ -114,10 +113,7 @@ class AddSectionPageState extends State<AddSectionPage> {
       leading: AppIcon.buildArrowDownIconButton(callback: _close),
       title: Text(
         'セクションの追加',
-        style: TextStyle(
-            fontSize: AppInfo.appBarTitleFontSize,
-            fontWeight: FontWeight.bold,
-        ),
+        style: Theme.of(context).textTheme.headline1
       ),
     );
   }
@@ -188,20 +184,18 @@ class AddSectionPageState extends State<AddSectionPage> {
     );
   }
 
-  Widget _buildListTileText(String title, {double fontSize}) {
+  Widget _buildListTileText(String title) {
     return Expanded(
       child: Text(
         title,
         softWrap: true,
         maxLines: 3,
-        style: TextStyle(
-          fontSize: fontSize,
-        ),
+        style: Theme.of(context).textTheme.bodyText1
       ),
     );
   }
 
-  Widget _buildListTile(BuildContext context, String title, IconData icon, Color color, VoidCallback callback, {double fontSize}){
+  Widget _buildListTile(BuildContext context, String title, IconData icon, Color color, VoidCallback callback){
     return InkWell(
         onTap: () => callback,//AppDataSelectUtils.onTapSelectColorTheme(context),
         child: ListTile(
@@ -212,7 +206,7 @@ class AddSectionPageState extends State<AddSectionPage> {
                 padding: const EdgeInsetsDirectional.only(end: 8.0),
                 child: Icon(icon, color: color, size: 22.0),
               ),
-              _buildListTileText(title, fontSize: fontSize),
+              _buildListTileText(title),
             ],
           ),
           trailing: AppIcon.buildArrowIcon(),

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:management/pages/todolist_section_page.dart';
+import 'package:management/pages/todolists/index_todolist_section_page.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
@@ -40,13 +40,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //print(widget.key);
+
     return Scaffold(
       body: PageView(
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: [
-          MyToDoListTablePage(),
+          IndexToDoListSectionPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
