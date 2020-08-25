@@ -12,6 +12,7 @@ class Utils{
           fullscreenDialog: true
         )
     ).then((value) => state?.setState(() { }));
+    //todo: FullScreenじゃなくても大丈夫なようにする
   }
 
   static void pushBounce(BuildContext context, Widget widget){
@@ -60,9 +61,6 @@ class Utils{
     if (Navigator.of(context).canPop()) Navigator.of(context).pop();
   }
 
-  static void popNsetState(BuildContext context){
-
-  }
 
   static void showConfirmDialog(BuildContext context, String title, List<Widget> widgets, {bool hasContent, String content}){
     showCupertinoDialog(

@@ -3,55 +3,54 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:management/pages/add_section_page.dart';
+import 'package:management/pages/new_todolist_section_page.dart';
 import 'package:management/utils/app_info.dart';
 import 'package:management/utils/utils.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:management/utils/model/todolist_model.dart';
-
 import 'package:management/Widgets/app_icon.dart';
 
 class MyToDoListPage extends StatefulWidget {
   final String tableName;
   final int index;
 
-  MyToDoListPage({
-    Key key,
-    this.tableName,
-    this.index
-  }) : super(key: key);
+  MyToDoListPage({Key key, this.tableName, this.index}) : super(key: key);
 
   @override
   MyToDoListPageState createState() => MyToDoListPageState();
 
-  static void push(BuildContext context, {Key key, String tableName, int index}){
+  static void push(BuildContext context, {Key key, String tableName, int index}) {
     Utils.pushSlide(
-      context,
-      MyToDoListPage(
-        key: key,
-        tableName: tableName,
-        index: index,
-      )
+        context,
+        MyToDoListPage(
+          key: key,
+          tableName: tableName,
+          index: index,
+        ),
     );
   }
 }
 
-class MyToDoListPageState extends State<MyToDoListPage> with SingleTickerProviderStateMixin {
+class MyToDoListPageState extends State<MyToDoListPage>
+    with SingleTickerProviderStateMixin {
   AnimationController controller;
   Animation<Offset> offset;
 
-  final GlobalKey<MyToDoListPageState> todoListPageKey = GlobalKey<MyToDoListPageState>();
+  final GlobalKey<MyToDoListPageState> todoListPageKey =
+      GlobalKey<MyToDoListPageState>();
   bool _pressedFab = false;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: Duration(seconds: 1));
-    offset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 1.0)).animate(controller);
+    controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    offset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 1.0))
+        .animate(controller);
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 
@@ -61,7 +60,7 @@ class MyToDoListPageState extends State<MyToDoListPage> with SingleTickerProvide
 
   _floatingActionButtonOnPressed() {
     setState(() {
-      if (_pressedFab){
+      if (_pressedFab) {
         _pressedFab = false;
       } else {
         _pressedFab = true;
@@ -73,8 +72,15 @@ class MyToDoListPageState extends State<MyToDoListPage> with SingleTickerProvide
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      appBar: AppBar(
+        leading: AppIcon.buildArrowBackIconButton(callback: _close),
+      ),
+      body: SingleChildScrollView(
+        child:
+            _buildListItem(context, widget.tableName, widget.index.toString()),
+      ),
+      bottomNavigationBar: _buildFooterButton(context),
+/*      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).backgroundColor,
           child: Icon(
@@ -95,7 +101,7 @@ class MyToDoListPageState extends State<MyToDoListPage> with SingleTickerProvide
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: new Row(
+          child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -105,43 +111,84 @@ class MyToDoListPageState extends State<MyToDoListPage> with SingleTickerProvide
                   Icons.info_outline,
                   color: Colors.white,
                 ),
-                onPressed: () {},
-              )
+                onPressed: () {
+
+                }
+              ),
             ],
           ),
         ),
+      ),*/
+    );
+  }
 
+  Widget _buildFooterButton(BuildContext context) {
+    return Container(
+      height: 60,
+      margin: EdgeInsets.symmetric(horizontal: 10.0),
+      child: RaisedButton(
+        child: RichText(
+          text: TextSpan(
+              text: "新規TodoList",
+              style: Theme.of(context).textTheme.button
+          ),
+        ),
+        color: Colors.purple.withOpacity(0.2),
+        splashColor: Colors.blue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        onPressed: () {},
       ),
     );
   }
 
-  Widget _buildAppBar() {
-    return AppBar(
-      leading: AppIcon.buildArrowBackIconButton(callback: _close),
-      title: Text(
-          '${widget.tableName}',
-        style: TextStyle(
-          fontSize: AppInfo.appBarTitleFontSize + 1,
-          fontWeight: FontWeight.bold
+  Widget _buildFooter(BuildContext context) {
+    return Container(
+      height: 50,
+      margin: EdgeInsets.symmetric(horizontal: 20.0),
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.blue.withOpacity(0.2),
+            /*image: DecorationImage(
+                image: AssetImage('assets/test.jpg'),
+                fit: BoxFit.fill,
+            ),*/
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+            ),
+          ),
+          child: Align(
+            alignment: Alignment.center,
+            child: RichText(
+              text: TextSpan(
+                  text: "新規TodoList",
+                  style: Theme.of(context).textTheme.button
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildListItem(BuildContext context, String tableName, String key, {VoidCallback callback}) {
+  Widget _buildListItem(BuildContext context, String tableName, String key,
+      {VoidCallback callback}) {
     return Dismissible(
       key: Key(key),
       background: Container(
         color: Colors.red,
-        child: Container(
-            child: Icon(Icons.delete)
-        ),
+        child: Container(child: Icon(Icons.delete)),
       ),
       secondaryBackground: Container(
         color: Colors.blue,
-        child: Container(
-            child: Icon(Icons.flag)
-        ),
+        child: Container(child: Icon(Icons.flag)),
       ),
       onDismissed: (direction) {
         print(direction);
@@ -152,18 +199,15 @@ class MyToDoListPageState extends State<MyToDoListPage> with SingleTickerProvide
           print("start to end"); // (日本語だと?)左から右のとき
         }
       },
-      child: Column(
-          children: <Widget> [
-            ListTile(
-              key: Key(key),
-              title: Text(tableName),
-              trailing: AppIcon.buildArrowIcon(),
-              onTap: () {},
-            ),
-            Divider(height:1.0)
-          ]
-      ),
+      child: Column(children: <Widget>[
+        ListTile(
+          key: Key(key),
+          title: Text(tableName),
+          trailing: AppIcon.buildArrowIcon(),
+          onTap: () {},
+        ),
+        Divider(height: 1.0)
+      ]),
     );
   }
-
 }

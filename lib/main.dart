@@ -33,25 +33,26 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  //todo:色がいい感じになる様にする、名前とかももう一回再確認
-  //todo:try to change themecolor
   final themeDataLight = ThemeData.light().copyWith(
-    primaryColorLight: Colors.white,
-    backgroundColor: Colors.blue,
-    accentColor: Colors.white, //ボタンの中のアイコンの色
-    textSelectionColor: Colors.white, //タブバーの文字の色
-    canvasColor: Colors.white, //カードの中の文字
+      primaryColor: Colors.blue,
+      iconTheme: IconThemeData.fallback().copyWith(
+        color: Colors.blueGrey, //todo：リファクタリング
+      ),
+      accentColor: Colors.white, //ボタンの中のアイコンの色
+      textTheme: TextTheme(
+          button: TextStyle(fontSize: 18, color: Colors.white)
+      )
   );
 
   final themeDataDark = ThemeData.dark().copyWith(
-    primaryColorDark: Colors.black,
-    iconTheme: IconThemeData.fallback().copyWith(
-      color: Colors.blueGrey,
-    ),
-    accentColor: Colors.blue, //ボタンの中のアイコンの色
+      primaryColorDark: Colors.black,
+      iconTheme: IconThemeData.fallback().copyWith(
+        color: Colors.blueGrey, //todo：リファクタリング
+      ),
+      accentColor: Colors.blue, //ボタンの中のアイコンの色
+      textTheme: TextTheme(
+          button: TextStyle(fontSize: 18, color: Colors.white)
+      )
   );
-
-
-
 
 }

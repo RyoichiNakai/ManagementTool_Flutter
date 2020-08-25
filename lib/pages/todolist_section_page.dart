@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:management/pages/add_section_page.dart';
+import 'package:management/pages/new_todolist_section_page.dart';
 import 'package:management/pages/todolist_page.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:management/utils/model/todolist_model.dart';
@@ -46,7 +46,6 @@ class MyToDoListTablePageState extends State<MyToDoListTablePage> {
       print(e);
     }
   }
-
 
   void _appBarLeadingOnPressed() {
     //todo
@@ -120,7 +119,7 @@ class MyToDoListTablePageState extends State<MyToDoListTablePage> {
   }
 
   Widget _buildListItem(BuildContext context, String tableName, String key, {VoidCallback callback}) {
-    //todo;全部消したあ，エラーが出る
+    //todo:全部消したら，エラーが出る
     return Dismissible(
       key: Key(key),
       background: Container(
