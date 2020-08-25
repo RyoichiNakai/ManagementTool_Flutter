@@ -29,36 +29,31 @@ class MyApp extends StatelessWidget {
         Locale('ja', 'JP'),
       ],
       home: MyHomePage(),
-      //TODO:root
     );
   }
 
 
   final themeDataLight = ThemeData.light().copyWith(
-    primaryColor: Colors.blue,
+    primaryColor: Colors.indigo,
     iconTheme: IconThemeData.fallback().copyWith(
-      color: Colors.blueGrey, //todo：リファクタリング
+      color: Colors.blueGrey,
     ),
-    accentColor: Colors.white, //ボタンの中のアイコンの色
     textTheme: TextTheme(
-      button: TextStyle(fontSize: 18, color: Colors.black),
+      button: TextStyle(fontSize: 18, color: Colors.white),
       headline1: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), //appbar
-      headline2: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), //見出し
-      bodyText1: TextStyle(color: Colors.black),
+      headline2: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black54), //見出し
+      bodyText1: TextStyle(color: Colors.black87),
     ),
   );
 
   final themeDataDark =  ThemeData.dark().copyWith(
-    primaryColorDark: Colors.black,
     iconTheme: IconThemeData.fallback().copyWith(
-      color: Colors.blueGrey, //todo：リファクタリング
+      color: Colors.blueGrey, //todo：カラーテーマの続き
     ),
-    accentColor: Colors.blue,
-    //ボタンの中のアイコンの色
     textTheme: TextTheme(
-      button: TextStyle(fontSize: 18, color: Colors.white),
+      button: TextStyle(fontSize: 16, color: Colors.white),
       headline1: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), //appbar
-      headline2: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), //見出し
+      headline2: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white), //見出し
       bodyText1: TextStyle(color: Colors.white),
     ),
   );

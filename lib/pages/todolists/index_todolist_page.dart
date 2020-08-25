@@ -9,6 +9,7 @@ import 'package:management/utils/utils.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:management/utils/model/todolist_model.dart';
 import 'package:management/Widgets/app_icon.dart';
+import 'package:management/Widgets/widget.dart';
 
 class IndexToDoListPage extends StatefulWidget {
   final String tableName;
@@ -42,8 +43,6 @@ class _IndexToDoListPageState extends State<IndexToDoListPage> with SingleTicker
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: Duration(seconds: 1));
-    offset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 1.0)).animate(controller);
   }
 
   @override
@@ -58,6 +57,7 @@ class _IndexToDoListPageState extends State<IndexToDoListPage> with SingleTicker
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: Widgets.buildBackIconAppBar(context, widget.tableName, callback: _close),
     );
   }
 }

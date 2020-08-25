@@ -62,10 +62,9 @@ class _IndexToDoListSectionPageState extends State<IndexToDoListSectionPage> {
     return Scaffold(
       appBar: _buildAppBar(),
       floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).primaryColor,
           child: Icon(
             Icons.add,
-            color: Theme.of(context).accentColor,
             size: 28.0,
           ),
           onPressed: _floatingActionButtonOnPressed),

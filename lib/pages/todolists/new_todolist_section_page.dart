@@ -7,6 +7,7 @@ import 'package:management/utils/app_shared_pref.dart';
 import 'package:management/utils/database/database_todolist.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:management/Widgets/app_icon.dart';
+import 'package:management/Widgets/widget.dart';
 import 'package:management/pages/todolists/index_todolist_section_page.dart';
 
 class NewTodoListSectionPage extends StatefulWidget {
@@ -85,17 +86,17 @@ class _NewTodoListSectionPageState extends State<NewTodoListSectionPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildTextFormCard(context),
-        _buildTitleListTile('オプション'),
+        Widgets.buildTitleListTile(context, 'オプション'),
         Divider(height:1.0),
-        _buildListTile(context, 'セクションのカラーテーマ変更', FontAwesomeIcons.palette, Colors.blue, null),
+        Widgets.buildListTile(context, 'セクションのカラーテーマ変更', FontAwesomeIcons.palette, Colors.blue, null),
         Divider(height:1.0),
-        _buildListTile(context, 'セクションのアイコンを変更', FontAwesomeIcons.heart, Colors.red, null),
+        Widgets.buildListTile(context, 'セクションのアイコンを変更', FontAwesomeIcons.heart, Colors.red, null),
         Divider(height:1.0),
       ],
     );
 
     return Scaffold(
-      appBar: _buildAppBar(context),
+      appBar: Widgets.buildDownIconAppBar(context, 'セクションの追加', callback: _close),
       body: GestureDetector (
         onTap: () async{
           _nameFocusNode.unfocus();
@@ -104,16 +105,6 @@ class _NewTodoListSectionPageState extends State<NewTodoListSectionPage> {
         child: SingleChildScrollView(
           child: _child,
         ),
-      ),
-    );
-  }
-
-  Widget _buildAppBar(BuildContext context) {
-    return AppBar(
-      leading: AppIcon.buildArrowDownIconButton(callback: _close),
-      title: Text(
-        'セクションの追加',
-        style: Theme.of(context).textTheme.headline1
       ),
     );
   }
@@ -127,7 +118,7 @@ class _NewTodoListSectionPageState extends State<NewTodoListSectionPage> {
           children: <Widget>[
             Text(
               'セクション名',
-              style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headline2
             ),
             TextFormField(
               controller: _textEditingController,
@@ -156,7 +147,10 @@ class _NewTodoListSectionPageState extends State<NewTodoListSectionPage> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   RaisedButton(
-                    child: Text('セクションを作成'),
+                    child: Text(
+                        'セクションを作成',
+                        style: Theme.of(context).textTheme.button
+                    ),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -172,45 +166,4 @@ class _NewTodoListSectionPageState extends State<NewTodoListSectionPage> {
     );
   }
 
-  Widget _buildTitleListTile(String title) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12.0),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildListTileText(String title) {
-    return Expanded(
-      child: Text(
-        title,
-        softWrap: true,
-        maxLines: 3,
-        style: Theme.of(context).textTheme.bodyText1
-      ),
-    );
-  }
-
-  Widget _buildListTile(BuildContext context, String title, IconData icon, Color color, VoidCallback callback){
-    return InkWell(
-        onTap: () => callback,//AppDataSelectUtils.onTapSelectColorTheme(context),
-        child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-          title: Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsetsDirectional.only(end: 8.0),
-                child: Icon(icon, color: color, size: 22.0),
-              ),
-              _buildListTileText(title),
-            ],
-          ),
-          trailing: AppIcon.buildArrowIcon(),
-        ),
-    );
-  }
 }
